@@ -8,5 +8,5 @@
 
 using CH01_CSharpBasics;
 
-T01_DataTypes t = new T01_DataTypes();
+T02_TypeConversion t = new ();
 t.Test();
