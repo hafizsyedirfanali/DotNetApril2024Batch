@@ -8,5 +8,5 @@
 
 using CH01_CSharpBasics;
 
-T02_TypeConversion t = new ();
+T03_Operators t = new ();
 t.Test();
