@@ -7,6 +7,7 @@
 /// 5. Conditional Operators
 /// 6. Increment Decrement Operators
 /// 7. Null Coalsing Operator
+/// 8. Null Forgiving Operator
 /// </summary>
 public class T03_Operators
 {
@@ -14,6 +15,31 @@ public class T03_Operators
     {
         TestLogicalBitwiseOperators();
     }
+    public void IncrementDecrementOperators()
+    {
+        //It has PreIncrement, Post Increment, Pre Decrement & Post Decrement operators
+        //       ++a            a++             --a            a--
+
+    }
+    public void NullForgivingOperator()
+    {
+        string? a = null;
+        //if it is sure that variable a will definately 
+        //get a value here
+        string result = a!;
+        //? operator -- will study after class & Properties
+    }
+    public void NullCoalsingOperator()
+    {
+        //It is a conditional Operator, and checks only NUll condition
+        string? a = null;
+
+        string result = a == null? "Blank": a;
+        result = a ?? "Blank";
+        //if a is not null then assign its value
+        //else assign "Blank"
+    }
+
     //Arithmatic operators
     public void TestArithmaticOperators()
     {
@@ -23,6 +49,19 @@ public class T03_Operators
         var multiplication = a * b;
         var divisionQuotient = a / b;
         var divisionRemainder = a % b;
+    }
+    public void ConditionalOperators()
+    {
+        //Ternary Operator  ?  :
+        int a = 10;
+        string result = a > 20 ? "Yes" : "No";
+        //if condition is true then 
+        //var result = "Yes";
+        //if condition is false then
+        //var result = "No";
+        bool result1 = a > 20 ? true : false;
+        int result2 = a > 20 ? 100 : 200;
+
     }
     public void TestLogicalBitwiseShiftOperators()
     {

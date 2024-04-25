@@ -70,6 +70,39 @@
             //it throws exception, which crashes the app
             dynamic d = 1.2;
         }
+        public void NullableDataType()
+        {
+            //After Migration to .net 6 version
+            //Nullabes are marked with ? to indicate that they are nullables
+
+            //Referenced nullable Variables
+            string? s;//here s will have null value
+            //All class objects are nullables, will hold null value if unassigned.
+            T01_DataTypes? t;//here t will have null value
+            string? s1 = null;//here i added null value explicitly
+            T01_DataTypes? t2 = null;
+
+            //Valued nullable variables
+            byte? b = null;
+            short? s2 = null;
+            int? i = null;
+            long? l = null;
+            float? f = null;
+            double? d = null;
+            decimal? dm = null;
+            char? c = null;
+            bool? b1 = null;
+
+            //condition1 : you have value
+            int value = 10;
+            //condition2 : you will surely get value afterwards 
+            int value1;
+            value1 = 20;
+            //condition3 : you may get value afterwards
+            int? value3 = null; //assigned null value (Recommended)
+            int? value4;//nullable but unassigned
+
+        }
     }
 }
 
