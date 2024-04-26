@@ -13,13 +13,18 @@ public class T03_Operators
 {
     public void Test()
     {
-        TestLogicalBitwiseOperators();
+        IncrementDecrementOperators();
     }
     public void IncrementDecrementOperators()
     {
         //It has PreIncrement, Post Increment, Pre Decrement & Post Decrement operators
         //       ++a            a++             --a            a--
-
+        //Post increment operator increments value at the last.
+        int a = 10;
+        var result = a++;//value of a(10) will be assigned to result, then value in a will be incremented
+        var result1 = ++a;//it increments first then assigns the incremented value
+        var result2 = a--;//it assigns the value to result then decrements a
+        var result3 = --a;//it decrements first then assigns the decremented value.
     }
     public void NullForgivingOperator()
     {
@@ -53,14 +58,14 @@ public class T03_Operators
     public void ConditionalOperators()
     {
         //Ternary Operator  ?  :
-        int a = 10;
+        int a = 10, b = 30;
         string result = a > 20 ? "Yes" : "No";
         //if condition is true then 
         //var result = "Yes";
         //if condition is false then
         //var result = "No";
         bool result1 = a > 20 ? true : false;
-        int result2 = a > 20 ? 100 : 200;
+        int result2 = (a > 20 && b < 30) || a == 10 ? 100 : 200;
 
     }
     public void TestLogicalBitwiseShiftOperators()

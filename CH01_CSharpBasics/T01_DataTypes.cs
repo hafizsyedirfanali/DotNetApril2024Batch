@@ -103,6 +103,18 @@
             int? value4;//nullable but unassigned
 
         }
+        public void ArrayDataTypes()
+        {
+            ///Array is a collection of same data type
+            ///we can have int array, float array, string array, 
+            ///bool array, char array, etc
+            ///
+            int[] a = { 1, 2, 3, 4 };
+            float[] f = { 1.1f, 2.2f };
+            string[] str = { "hello", "world" };
+            bool[] b = { true, false };
+            char[] c = { 'a', 'b', 'c' };
+        }
     }
 }
 
