@@ -8,5 +8,5 @@
 
 using CH01_CSharpBasics;
 
-T04_StringManipulations t = new ();
+T07_Arrays t = new ();
 t.Test();
