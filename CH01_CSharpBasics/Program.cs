@@ -8,5 +8,5 @@
 
 using CH01_CSharpBasics;
 
-T07_Arrays t = new ();
+T08_ConditionalStatements t = new ();
 t.Test();
