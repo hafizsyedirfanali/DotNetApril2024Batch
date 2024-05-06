@@ -1,3 +1,5 @@
 ﻿using CH02_OOPS;
 
-T02_Constructors t = new T02_Constructors(10,"Abid");
+T01_Classes t = new ();
+t.Test();
+

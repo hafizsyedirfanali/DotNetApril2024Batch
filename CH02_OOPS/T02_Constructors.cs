@@ -7,9 +7,24 @@
 /// parameterless (default)(hidden/visible), parameterized(visible).
 /// We can have constructor overloading by different signatures/definations
 /// We can achieve dependency injection using constructor
+/// We have Copy Constructor used to duplicate the class instance with values (Rarely Used due to DRY principle)
+/// We have private constructor used to create instance of the class from within the class only.
 /// </summary>
 public class T02_Constructors
 {
+    public void Test()
+    {
+        //Calling private Constructor
+        T02_Constructors t = new T02_Constructors(10, "Student", new T02_Constructors());
+    }
+    public int Age { get; set; }
+    public string Name { get; set; }
+    public T02_Constructors Obj {  get; }
+    private T02_Constructors(int age, string name, T02_Constructors obj)
+    {
+        this.Age = age;
+        this.Name = name;
+    }
     public T02_Constructors()//default/parameterless constructor
     {
         //When we do not specify any constructor for a class
@@ -32,5 +47,11 @@ public class T02_Constructors
     public T02_Constructors(int age, string name)
     {
 
+    }
+    public T02_Constructors(T02_Constructors obj)//Copy Constructor
+    {
+        Obj = obj;
+        this.Age = obj.Age;
+        this.Name = obj.Name;
     }
 }

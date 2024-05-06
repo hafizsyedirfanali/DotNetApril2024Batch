@@ -13,6 +13,20 @@
 /// </summary>
 public class T01_Classes
 {
+    public void Test()
+    {
+        ClassWithProperties p = new ClassWithProperties();
+        ClassWithProperties p1 = p;
+        ClassWithProperties p2 = new ClassWithProperties();
+        T02_Constructors c = new T02_Constructors(new T02_Constructors());
+        //Creating an instance of T02_Constructor class with properties
+        T02_Constructors c1 = new T02_Constructors()
+        {
+            Age = 10,
+            Name = "Student"
+        };
+        T02_Constructors c2 = new T02_Constructors(c1);
+    }
     public class ClassWithHiddenConstructor
     {
 
