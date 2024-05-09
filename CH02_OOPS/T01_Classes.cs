@@ -81,6 +81,7 @@ public class T01_Classes
         {
             //here we can add set of instructions that will be
             //executed at the time of removal of class instance.
+            //Now a days we don't use it, as we have better options like try-catch-finally or using
         }
     }
 }
