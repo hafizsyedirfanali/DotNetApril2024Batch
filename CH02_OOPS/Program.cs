@@ -1,5 +1,4 @@
 ﻿using CH02_OOPS;
 
-T05_Methods t = new ();
+T09_Collections t = new();
 t.Test();
-
