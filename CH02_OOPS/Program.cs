@@ -1,4 +1,4 @@
 ﻿using CH02_OOPS;
 
-T09_Collections t = new();
+T10_Delegates t = new();
 t.Test();

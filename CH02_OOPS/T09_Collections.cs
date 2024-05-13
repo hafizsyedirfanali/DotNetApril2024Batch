@@ -5,21 +5,70 @@
 /// The primary collection is an Array.
 /// The examples of collection is
 /// 1. Array - CH01-T07
-/// 2. List
+/// 2. List - Mostly Used
 /// 3. Queue
 /// 4. Stack
-/// 5. Tuple - Used to return multiple objects
-/// 6. ICollection
-/// 7. IList
-/// 8. IEnumerable
-/// 9. IQuerable
+/// 5. Tuple - Collection of different types. Used to return multiple objects
+/// 6. Dictionary- Collection of Key Value pair
+/// 7. HashSet - Collection of unique values.
+/// 8. Concurrent Collections - Multithreading
+/// . ICollection
+/// . IList
+/// . IEnumerable
+/// . IQuerable
 /// </summary>
 public class T09_Collections
 {
     public void Test()
     {
-        var result = TestTuple(new Student() { Id = 1, Name = "AA", Age = 11 });
-        var result1 = ReturnSingleObject(new Student() { Id = 1, Name = "AA", Age = 11 });
+        TestHashSet();
+    }
+
+    public void TestHashSet()
+    {
+        HashSet<string> emails = new HashSet<string>();
+        emails.Add("a");
+        emails.Add("a");//A HashSet ignores duplicate values
+        emails.Add("b");
+
+        var isAvailable = emails.Contains("a");
+
+        emails.RemoveWhere(x => x != "a");
+
+        emails.Clear();
+    }
+
+    public void TestDictionary()
+    {
+        Dictionary<string, string> nameDictionary = new Dictionary<string, string>();
+        //ADDING KEY VALUES
+        nameDictionary.Add("Name1", "Value1");
+        //nameDictionary.Add("Name1", "Value1");//A dictionary does not allow duplicate key
+        nameDictionary.Add("Name2", "Value1");//A dictionary allows duplicate values
+        //READING KEY VALUES
+        bool isSuccess = nameDictionary.TryGetValue("Name1", out string? result);
+        if (isSuccess && result is not null)
+        {
+            result = result.ToUpper();
+        }
+        if (isSuccess)
+        {
+            result = result!.ToUpper();
+        }
+        //CHECKING KEY IF AVAILABLE?
+        bool isExist = nameDictionary.ContainsKey("Name1");
+        if (isExist)
+        {
+            var value = nameDictionary.GetValueOrDefault("Name1");
+        }
+        //REMOVING KEY
+        bool isRemoved = nameDictionary.Remove("Name1");
+        if (isRemoved)
+        {
+            Console.WriteLine("Key Name1 Removed");
+        }
+        //REMOVING KEYS
+        nameDictionary.Clear();
     }
 
     public void TestList()
