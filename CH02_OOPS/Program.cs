@@ -1,4 +1,4 @@
 ﻿using CH02_OOPS;
 
-T11_StandardDelegates t = new();
+T12_LambdaFunction t = new();
 t.Test();
