@@ -1,4 +1,4 @@
 ﻿using CH02_OOPS;
 
-T12_LambdaFunction t = new();
+T14_LINQBasics t = new();
 t.Test();

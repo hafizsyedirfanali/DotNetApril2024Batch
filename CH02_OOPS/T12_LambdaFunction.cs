@@ -39,6 +39,7 @@ public class T12_LambdaFunction
         Func<int, int> func21 = (x) => { return x; };
         func2 = (x) => x;
         func2 = (x) => new Random().Next(0, x);//Example
+        func2 = x => ++x;
 
         //Two int parameters
         Func<int, int, int> func3 = (x, y) =>
