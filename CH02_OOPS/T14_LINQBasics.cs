@@ -7,8 +7,8 @@
 /// -Count
 /// -Min
 /// -Max
-/// -Take
-/// -Skip
+/// -Take //Used in pagination
+/// -Skip //Used in pagination
 /// -First
 /// -FirstOrDefault
 /// -Last
@@ -35,7 +35,126 @@ public class T14_LINQBasics
 
     public void Test()
     {
-        TestWhere();
+        ExperimentOnSingle();
+    }
+
+    public void ExperimentOnSingle()
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            var student = students.Where(s => s.Id == 5).SingleOrDefault();
+            Console.WriteLine($"ID = {student.Id} Name = {student.Name}");
+        }
+    }
+
+    public void TestSingleOrDefault()
+    {
+        //Single or Default will return an object if sequece/collection contains only one element
+        //If sequence contains more than one elements then it will throw exception
+        //if sequence contains no elements then it will return null.
+        var student = students.Where(s => s.Age > 14).SingleOrDefault();
+        //student will contain either data or it will throw exception "Invalid Operation Exception"
+        if (student is not null)//With FirstOrDefault if is mandatory
+            Console.WriteLine($"ID = {student.Id} Name = {student.Name}");
+    }
+
+    public void TestSingle()
+    {
+        //Single or Default will return an object if sequece/collection contains only one element
+        //If sequence contains more than one elements then it will throw exception
+        //if sequence contains no elements then it will throw exception.
+        try
+        {
+            var student = students.Where(s => s.Age > 14).Single();
+            //with Last, try catch is mandatory
+            //student will contain either data or it will throw exception "Invalid Operation Exception"
+            Console.WriteLine($"ID = {student.Id} Name = {student.Name}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    public void TestLastOrDefault()
+    {
+        var student = students.Where(s => s.Age > 14).LastOrDefault();
+        //student will contain either data or it will throw exception "Invalid Operation Exception"
+        if (student is not null)//With FirstOrDefault if is mandatory
+            Console.WriteLine($"ID = {student.Id} Name = {student.Name}");
+    }
+
+    public void TestLast()
+    {
+        try
+        {
+            var student = students.Where(s => s.Age > 14).Last();
+            //with Last, try catch is mandatory
+            //student will contain either data or it will throw exception "Invalid Operation Exception"
+            Console.WriteLine($"ID = {student.Id} Name = {student.Name}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    public void TestFirstOrDefault()
+    {
+        var student = students.Where(s => s.Age > 14).FirstOrDefault();
+        //student will contain either data or it will throw exception "Invalid Operation Exception"
+        if (student is not null)//With FirstOrDefault if is mandatory
+            Console.WriteLine($"ID = {student.Id} Name = {student.Name}");
+    }
+
+    public void TestFirst()
+    {
+        try
+        {
+            var student = students.Where(s => s.Age > 14).First();
+            //with First, try catch is mandatory
+            //student will contain either data or it will throw exception "Invalid Operation Exception"
+            Console.WriteLine($"ID = {student.Id} Name = {student.Name}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    public void TestDistinct()
+    {
+        var genders = students.Select(s => s.Gender).Distinct().ToList();
+        foreach (var gender in genders)
+        {
+            Console.WriteLine(gender);
+        }
+    }
+
+    public void TestMax()
+    {
+        var max = students.Max(s => s.Id);
+    }
+
+    public void TestMin()
+    {
+        var min = students.Min(x => x.Age);
+    }
+
+    public void TestCount()
+    {
+        var count = students.Count(s => s.Id > 2);
+    }
+
+    public void TestSelectWhere()
+    {
+        var studentList = students
+            .Where(s => s.Name.Contains('o'))//filtered rows
+            .Select(s => new { s.Id, s.Name }).ToList();//selected columns
+        foreach (var student in studentList)
+        {
+            Console.WriteLine($"ID = {student.Id} & Name = {student.Name}");
+        }
     }
 
     public void TestSelect()
