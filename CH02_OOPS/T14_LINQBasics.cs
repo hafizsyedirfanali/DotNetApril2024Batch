@@ -23,19 +23,41 @@ public class T14_LINQBasics
 
     public T14_LINQBasics()
     {
-        students = new List<Student>()
+        students = new List<Student>();
+        for (int i = 1; i <= 100; i++) // Loop 50 times (from 5 to 54)
         {
-            //In-Memory Collection
-            new Student{Id = 1, Name = "Fisrt", Age = 11, Gender="M"},
-            new Student{Id = 2, Name = "Second", Age = 12, Gender="F"},
-            new Student{Id = 3, Name = "Third", Age = 13, Gender="M"},
-            new Student{Id = 4, Name = "Fourth", Age = 14, Gender="F"},
-        };
+            students.Add(new Student { Id = i, Name = "Student " + i, Age = 11 + (i - 5), Gender = (i % 2 == 0) ? "M" : "F" });
+        }
     }
 
     public void Test()
     {
-        ExperimentOnSingle();
+        TestPagination(12,5);
+    }
+    public void TestPagination(int pageNo, int pageSize)
+    {
+        var studentList = students.Skip((pageNo-1)*pageSize).Take(pageSize);
+        foreach (var student in studentList)
+        {
+            Console.WriteLine($"ID = {student.Id} & Name = {student.Name}");
+        }
+        Console.WriteLine($"Page No {pageNo}");
+    }
+    public void TestTake()
+    {
+        var studentList = students.Take(2).ToList();
+        foreach (var student in studentList)
+        {
+            Console.WriteLine($"ID = {student.Id} & Name = {student.Name}");
+        }
+    }
+    public void TestSkip()
+    {
+        var studentList = students.Skip(2).ToList();
+        foreach (var student in studentList)
+        {
+            Console.WriteLine($"ID = {student.Id} & Name = {student.Name}");
+        }
     }
 
     public void ExperimentOnSingle()
