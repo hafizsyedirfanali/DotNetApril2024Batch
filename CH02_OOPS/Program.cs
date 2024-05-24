@@ -1,4 +1,4 @@
 ﻿using CH02_OOPS;
 
-T16_AsyncAwait t = new();
+T15_Multithreading t = new();
 t.Test();

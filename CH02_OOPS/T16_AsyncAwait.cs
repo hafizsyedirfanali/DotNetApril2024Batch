@@ -7,11 +7,11 @@ namespace CH02_OOPS;
 /// async method executes on a separate thread, other than main (UI) thread.
 /// async keyword is used to declare the method as asynchronous
 /// and await keywork is used before asynchronous method call for getting the result from it.
-/// await keyword can be used only in async methods or 
+/// await keyword can be used only in async methods or
 /// async methods may have one or more awaiting type of method calls
 /// async methods usually returns a task, which has an overload of generic type
 /// async method returns the result as TResult of Generic Task
-/// 
+///
 /// async method facilitates the cancellation of its execution, i.e. its termination.
 /// </summary>
 
@@ -21,6 +21,7 @@ public class T16_AsyncAwait
     {
         TestLongRunningMethodCall();
     }
+
     public void TestAsyncMethod()
     {
         //DelayAsync(1000);//the warning is specifying that it will run on separate thread.
@@ -32,19 +33,19 @@ public class T16_AsyncAwait
         var task = DelayAsync(1000);
         Task.WaitAll(task);//This method blocks the main thread for waiting the async method.
     }
+
     public async Task TestAsyncMethodWithCancellationToken()
     {
-        CancellationTokenSource cts = new CancellationTokenSource();        
+        CancellationTokenSource cts = new CancellationTokenSource();
 
-        await DelayAsync(1000,cts.Token);
-        await DelayAsync(1000,cts.Token);
-        await DelayAsync(1000,cts.Token);
-        await DelayAsync(1000,cts.Token);
-        await DelayAsync(1000,cts.Token);
+        await DelayAsync(1000, cts.Token);
+        await DelayAsync(1000, cts.Token);
+        await DelayAsync(1000, cts.Token);
+        await DelayAsync(1000, cts.Token);
+        await DelayAsync(1000, cts.Token);
 
         try
         {
-            
         }
         catch (Exception ex)
         {
@@ -52,13 +53,19 @@ public class T16_AsyncAwait
             //where the cts.token is passed
         }
     }
+
     public void TestLongRunningMethodCall()
     {
         Stopwatch stopWatch = new Stopwatch();
         stopWatch.Start();
         var cts = new CancellationTokenSource();
+        var userInput = Console.ReadLine();//we cannot demonstrate in debugging mode.
         var task = ALongRunningMethod(cts.Token);
-        
+        if (userInput == "0")
+        {
+            Thread.Sleep(3000);
+            cts.Cancel();
+        }
         Task.WaitAll(task);
         stopWatch.Stop();
         TimeSpan ts = stopWatch.Elapsed;
@@ -67,11 +74,13 @@ public class T16_AsyncAwait
             ts.Milliseconds / 10);
         Console.WriteLine("RunTime " + elapsedTime);
     }
+
     public async Task<bool> DelayAsync(int miliseconds)//Asynchronous mehtod.
     {
         await Task.Delay(miliseconds);
         return true;
     }
+
     public async Task<bool> DelayAsync(int miliseconds, CancellationToken cancellationToken)//Asynchronous mehtod.
     {
         await Task.Delay(miliseconds, cancellationToken);
@@ -82,6 +91,7 @@ public class T16_AsyncAwait
     {
         for (int i = 0; i < 10; i++)
         {
+            await Console.Out.WriteLineAsync("value = " + i);
             if (cancellationToken.IsCancellationRequested)
             {
                 return;

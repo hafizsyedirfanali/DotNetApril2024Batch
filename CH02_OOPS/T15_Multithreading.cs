@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 
 namespace CH02_OOPS;
+
 /// <summary>
 /// A thread is a software, a part of OS, it allows us to use CPU
 /// This topic is to demonstrate the advantage of using multithreading.
@@ -9,8 +10,23 @@ public class T15_Multithreading
 {
     public void Test()
     {
-        TestTasksAsynchronously();
+        TestParallel();
     }
+
+    public void TestParallel()
+    {
+        //Serial (synchronous) operation
+        //for (int x = 0; x < 100; x++)
+        //{
+        //    Console.WriteLine($"value of x is {x}");
+        //}
+        //Parallel (asynchronous) operation
+        Parallel.For(1, 1000, x =>
+        {
+            Console.WriteLine($"value of x is {x}");
+        });
+    }
+
     public void TestTasksAsynchronously()//this function will run on main thread (UI Thread)
     {
         Stopwatch stopWatch = new Stopwatch();
@@ -27,10 +43,11 @@ public class T15_Multithreading
             ts.Milliseconds / 10);
         Console.WriteLine("RunTime " + elapsedTime);
     }
+
     public void TestTasksSynchronously()
     {
         Stopwatch stopWatch = new Stopwatch();
-        stopWatch.Start();        
+        stopWatch.Start();
         Task1();
         Task2();
         Task3();
@@ -42,21 +59,25 @@ public class T15_Multithreading
             ts.Milliseconds / 10);
         Console.WriteLine("RunTime " + elapsedTime);
     }
+
     public void Task1()
     {
         Thread.Sleep(2000);
         Console.WriteLine("Task1 Completed");
     }
+
     public void Task2()
     {
         Thread.Sleep(8000);
         Console.WriteLine("Task2 Completed");
     }
+
     public void Task3()
     {
         Thread.Sleep(6000);
         Console.WriteLine("Task3 Completed");
     }
+
     public void Task4()
     {
         Thread.Sleep(4000);

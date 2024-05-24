@@ -24,6 +24,10 @@ public class T09_Collections
         TestHashSet();
     }
 
+    public void TestRecord()
+    {
+    }
+
     public void TestHashSet()
     {
         HashSet<string> emails = new HashSet<string>();
