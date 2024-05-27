@@ -38,7 +38,7 @@ public class T16_AsyncAwait
     {
         CancellationTokenSource cts = new CancellationTokenSource();
 
-        await DelayAsync(1000, cts.Token);
+        await DelayAsync(1000, cts.Token).ConfigureAwait(false);//best practice
         await DelayAsync(1000, cts.Token);
         await DelayAsync(1000, cts.Token);
         await DelayAsync(1000, cts.Token);
@@ -83,7 +83,7 @@ public class T16_AsyncAwait
 
     public async Task<bool> DelayAsync(int miliseconds, CancellationToken cancellationToken)//Asynchronous mehtod.
     {
-        await Task.Delay(miliseconds, cancellationToken);
+        await Task.Delay(miliseconds, cancellationToken).ConfigureAwait(false);
         return true;
     }
 
