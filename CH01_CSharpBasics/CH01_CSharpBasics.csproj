@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CH02_OOPS\CH02_OOPS.csproj" />
+  </ItemGroup>
+
 </Project>

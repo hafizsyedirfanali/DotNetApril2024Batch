@@ -16,7 +16,7 @@ public class T17_Inheritance_SingleInheritance
         b.MyProperty = 1;
         b.TestMethod();
     }
-    public class A
+    public class A//Parent class/ base class
     {
         public int MyProperty { get; set; }
         public int count;
@@ -25,7 +25,7 @@ public class T17_Inheritance_SingleInheritance
 
         }
     }
-    public class B : A
+    public class B : A//class B is derived from class A //child class or derived class
     {
 
     }
@@ -41,7 +41,7 @@ public class T17_Inheritance_MultilevelInheritance
         d.Count = 1;
         d.MyProperty = 1;
     }
-    public class A
+    public class A // root
     {
         public int MyProperty { get; set; }
         public int Count;
@@ -54,7 +54,7 @@ public class T17_Inheritance_MultilevelInheritance
     {
 
     }
-    public class D : C
+    public class D : C //leaf
     {
 
     }
@@ -83,6 +83,10 @@ public class T17_Inheritance_HierarchicalInheritance
     {
 
     }
+    public class B3 : A
+    {
+
+    }
 }
 public class T17_Inheritance_MultipleInheritance
 {
@@ -96,20 +100,20 @@ public class T17_Inheritance_MultipleInheritance
 
     }
 
-    public interface Parent1Class
+    public interface Parent1Interface
     {
         public int MyProperty1 { get; set; }
-        public void Test1();
+        //public void Test1();
     }
-    public interface Parent2Class
+    public interface Parent2Interface
     {
         public int MyProperty2 { get; set; }
-        public void Test2();
+        //public void Test2();
     }
     /// <summary>
-    /// Following child class is not inheriting but implementing
+    /// Following child class is not inheriting but implementing the parent interfaces
     /// </summary>
-    public class ChildClass : Parent1Class, Parent2Class
+    public class ChildClass : Parent1Interface, Parent2Interface
     {
         private int myProperty;
         public int MyProperty1 
@@ -134,7 +138,6 @@ public class T17_Inheritance_MultipleInheritance
         }
     }
 }
-
 public class T17_Inheritance_HybridInheritance
 {
     /// <summary>
