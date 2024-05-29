@@ -25,29 +25,30 @@ namespace CH02_OOPS//Assembly
             Add(1, 2);
             ProtectedInternalClass protectedInternalClass = new ProtectedInternalClass();
         }
+
         public class PublicClass
         {
-
         }
+
         private class PrivateClass
         {
-
         }
+
         internal class InternalClass
         {
-
         }
+
         protected class ProtectedClass
         {
-
         }
+
         protected int Add(int x, int y) => x + y;
 
         protected internal class ProtectedInternalClass
         {
-
         }
     }
+
     public class OuterClass
     {
         public void Test()
@@ -60,6 +61,7 @@ namespace CH02_OOPS//Assembly
             ProtectedInternalClass protectedInternalClass = new ProtectedInternalClass();
         }
     }
+
     public class OuterDerivedClass : T19_Encapsulation
     {
         public void Test()
@@ -69,5 +71,3 @@ namespace CH02_OOPS//Assembly
         }
     }
 }
-
-

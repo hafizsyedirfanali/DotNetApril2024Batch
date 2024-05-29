@@ -13,6 +13,7 @@ namespace CH01_CSharpBasics
             //ProtectedInternalClass protectedInternalClass = new ProtectedInternalClass();//inaccessible
         }
     }
+
     public class ProtectedInternalChildClass : T19_Encapsulation
     {
         public void Test()

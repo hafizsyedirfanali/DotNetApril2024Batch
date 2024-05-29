@@ -1,4 +1,4 @@
 ﻿using CH02_OOPS;
 
-T15_Multithreading t = new();
+T20_Polymorphism t = new();
 t.Test();
