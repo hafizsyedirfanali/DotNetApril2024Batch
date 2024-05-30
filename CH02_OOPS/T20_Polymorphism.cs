@@ -15,12 +15,19 @@ public class T20_Polymorphism
 {
     public void Test()
     {
+        //A parent class instance can be created by its child class constructor
+        A a = new B();
+        B b = new C();
+        C c = new D();
+
+        a = new D();
+
         //A a = new A();
         D d = new D(10);
         Add(1, 2, 3);
 
-        ChildClass c = new ChildClass();
-        c.Message("Greetings");
+        ChildClass cc = new ChildClass();
+        cc.Message("Greetings");
     }
 
     #region Method Overloading
