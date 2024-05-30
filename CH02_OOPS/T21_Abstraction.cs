@@ -9,6 +9,38 @@
 
 public class T21_Abstraction
 {
+    public class UsingInterface
+    {
+        private readonly IService service;
+        public UsingInterface(IService service)//IService is injected into the constructor
+        {
+            this.service = service;
+        }
+        public void Test()
+        {
+            service.PrintService("Hello");
+            service.MessageService("Hello");
+        }
+        
+        public interface IService //the standard of naming the interface is that the name will start with I
+        {
+            public void PrintService(string message);
+
+            public void MessageService(string message);
+        }
+        public class Implementation : IService 
+        {
+            public void PrintService(string message)
+            {
+                Console.WriteLine("Message printed");
+            }
+            public void MessageService(string message)
+            {
+                Console.WriteLine("Message sent");
+
+            }
+        }
+    }
     public class UsingAbstractClass
     {
         public void Test()
