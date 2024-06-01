@@ -25,6 +25,11 @@ public class T03_Operators
         var result1 = ++a;//it increments first then assigns the incremented value
         var result2 = a--;//it assigns the value to result then decrements a
         var result3 = --a;//it decrements first then assigns the decremented value.
+        a = 10;
+        Console.WriteLine(a++);
+        Console.WriteLine(++a);
+        Console.WriteLine(--a);
+        Console.WriteLine(a--);
     }
     public void NullForgivingOperator()
     {
@@ -91,9 +96,9 @@ public class T03_Operators
         //   Bitwise Anding= 10
         //   Bitwise Oring = 11
         int operand1 = 2, operand2 = 3;
-        var result = 2 & 3;
+        var result = 2 & 3;//ans = 2
 
-        result = 2 | 3;
+        result = 2 | 3;//ans = 3
     }
     public void TestLogicalOperators()
     {

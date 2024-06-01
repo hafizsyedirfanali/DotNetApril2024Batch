@@ -1,4 +1,6 @@
-﻿namespace CH01_CSharpBasics
+﻿using System.Numerics;
+
+namespace CH01_CSharpBasics
 {
     public class T01_DataTypes
     {
@@ -16,9 +18,12 @@
 
             uint ui = 4294967295;//0 to 4,294,967,295
             int si = 2147483647; //-2,147,483,648 to 2,147,483,647
+            Int32 i32 = 2147483647;
 
             ulong ul = 18446744073709551615;//0 to 18,446,744,073,709,551,615
             long sl = 9223372036854775807;//-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
+            Int64 i64 = 9223372036854775807;
+            BigInteger big = 9223372036854775807;//128 bit, 2^128 = ??
         }
         public void FloatingDataType()//Valued - Default value is 0
         {
@@ -44,7 +49,7 @@
         {
             //Every referenced type if kept unassigned holds null value.
             string s;//here s holds null value.
-            string s1 = "hello";//in this s1 will be in stack and "hello" will be 
+            string s1 = "hello";//in this s1 will be in stack and "hello" will be            
             //in heap, whose starting address will be stored in s1 (stack)
             //Garbage Collector is responsible for cleaning the unreferenced data
         }
@@ -62,13 +67,17 @@
         public void ObjectDataType()//it is a compile time datatype (Frequently as compared to Dynamic)
         {
             //it verifies data at compile time.
-            object o = 1.2;
+            object o = "hello";
+            double d = Convert.ToDouble(o);
+            //it throws error during compile time when working with incompitible data  
         }
         public void DynamicDataType()//it is a runtime datatype (Rare)
         {
             //as it verifies data at runtime and if data is non convertible,
             //it throws exception, which crashes the app
-            dynamic d = 1.2;
+            dynamic d = "hello";
+            double d1 = Convert.ToDouble(d);
+            //it throws error during run time when working with incompitible data  
         }
         public void NullableDataType()
         {
@@ -114,6 +123,7 @@
             string[] str = { "hello", "world" };
             bool[] b = { true, false };
             char[] c = { 'a', 'b', 'c' };
+            object[] obj = { "hello", 1, 's', true };
         }
     }
 }

@@ -12,6 +12,7 @@ public class T02_TypeConversion
     }
     public void CastUsingParseMethod()
     {
+        //If it is unable to convert then it will throw error
         string str = "9223372036854775807";
         byte b = byte.Parse(str);
         short s = short.Parse(str);
@@ -31,6 +32,7 @@ public class T02_TypeConversion
         isSuccess = decimal.TryParse(str, out  decimal resultDecimal);
         isSuccess = char.TryParse(str, out char  resultChar);
         isSuccess = bool.TryParse(str, out bool resultBool);
+        //we can verify using isSuccess if the value is converted or not
     }
     public void CastingUsingConvertClass()
     {
@@ -45,6 +47,7 @@ public class T02_TypeConversion
         char c = Convert.ToChar(i);
         string str = "1l";
         i = Convert.ToInt32(str);
+        string s1 = f.ToString();
     }
     public void TestExplicit()
     {
