@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Institute>
+	<Name>Nass Technologies</Name>
+	<Address>Nagpur</Address>
+	<Services>
+		<Software>.Net</Software>
+		<Teaching>.Net</Teaching>
+		<Courses>
+			<C1>.Net1</C1>
+			<C1>C#</C1>
+			<C1>Java</C1>
+		</Courses>
+	</Services>
+</Institute>

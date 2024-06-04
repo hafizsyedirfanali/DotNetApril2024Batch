@@ -1,0 +1,14 @@
+{
+  "Name": "Nass Technologies",
+  "Address": "Nagpur",
+  "ContactNumber": 123456789,
+  "IsAvailable": true,
+  "Services": {
+    "Software": ".Net",
+    "Software": ".Net",
+    "Teaching": ".Net",
+    "Courses": {
+      "C1": [".Net","C#","Java"]
+    }
+  }
+}
