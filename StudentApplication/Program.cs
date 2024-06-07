@@ -1,6 +1,11 @@
+///Service Lifetimes
+///Singleton - One instance of a resource, reused anytime it's requested. 
+///Scoped - One instance will serve all the requests from a single scope, beyond scope it will be freed. 
+///Transient - A different instance of a resource, everytime it's requested.
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StudentApplication.Data;
+using StudentApplication.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +20,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddMvc();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
+builder.Services.AddTransient<TestService>();
+
 
 var app = builder.Build();
 
