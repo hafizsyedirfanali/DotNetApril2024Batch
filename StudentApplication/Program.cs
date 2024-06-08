@@ -1,7 +1,11 @@
 ///Service Lifetimes
 ///Singleton - One instance of a resource, reused anytime it's requested. 
-///Scoped - One instance will serve all the requests from a single scope, beyond scope it will be freed. 
-///Transient - A different instance of a resource, everytime it's requested.
+///single instance will serve all the incoming requests. It will not be disposed untill project is running.
+///
+///Scoped - Single instance will serve all the requests from a scope, 
+///For another scope a new instance will be created. Beyond scope it will be disposed. 
+///
+///Transient - A new instance is created for every request. After completing the request it is disposed.
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StudentApplication.Data;
@@ -20,8 +24,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddMvc();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
-builder.Services.AddTransient<TestService>();
-
+builder.Services.AddTransient<TestService>();//Factory of Transient type, will provide new instance whenever requested
+//builder.Services.AddScoped<TestService>();
 
 var app = builder.Build();
 
