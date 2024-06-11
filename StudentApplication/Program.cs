@@ -25,7 +25,11 @@ builder.Services.AddMvc();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddTransient<TestService>();//Factory of Transient type, will provide new instance whenever requested
+builder.Services.AddKeyedSingleton<TestService>("single");
+builder.Services.AddKeyedTransient<TestService>("transient");
+builder.Services.AddKeyedScoped<TestService>("scoped");
 //builder.Services.AddScoped<TestService>();
+
 
 var app = builder.Build();
 

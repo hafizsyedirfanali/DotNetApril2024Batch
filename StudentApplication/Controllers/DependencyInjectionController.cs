@@ -7,9 +7,13 @@ namespace StudentApplication.Controllers;
 /// </summary>
 public class DependencyInjectionController : Controller
 {
-    private TestService _testService;
-    private IServiceProvider _serviceProvider;
-    public DependencyInjectionController(TestService testService, IServiceProvider serviceProvider)
+    private readonly TestService _testService;
+    private readonly IServiceProvider _serviceProvider;
+    public DependencyInjectionController(TestService testService, 
+        IServiceProvider serviceProvider,
+        [FromKeyedServices("single")]TestService testService1,
+        [FromKeyedServices("transient")] TestService testService2,
+        [FromKeyedServices("scoped")] TestService testService3)
     {
         this._testService = testService;//Optimum method of injecting service
         _serviceProvider = serviceProvider;//Not recommended, not standard
