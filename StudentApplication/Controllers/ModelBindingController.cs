@@ -9,7 +9,7 @@ public class ModelBindingController : Controller
     public ModelBindingController()
     {
         students = new List<StudentViewModel>();
-        for (int i = 1; i <= 100; i++) // Loop 50 times (from 5 to 54)
+        for (int i = 1; i <= 10; i++) // Loop 50 times (from 5 to 54)
         {
             students.Add(new StudentViewModel { Id = i, Name = "Student " + i, Age = 11 + (i - 5), Gender = (i % 2 == 0) ? "M" : "F" });
         }
@@ -35,5 +35,20 @@ public class ModelBindingController : Controller
     public IActionResult Students1()//Scaffolded
     {
         return View(students);
+    }
+    [HttpGet]
+    public IActionResult AddStudent()
+    {
+        return View();
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult AddStudent(StudentViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            return View();
+        }
+        return View();
     }
 }
