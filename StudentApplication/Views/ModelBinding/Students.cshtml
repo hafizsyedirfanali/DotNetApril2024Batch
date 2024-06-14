@@ -10,6 +10,7 @@
                 <th>Name</th>
                 <th>Age</th>
                 <th>Gender</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +21,11 @@
                     <td>@student.Name</td>
                     <td>@student.Age</td>
                     <td>@student.Gender</td>
+                    <td>
+                        <form method="post" asp-action="DeleteStudent" asp-route-id="@student.Id">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>

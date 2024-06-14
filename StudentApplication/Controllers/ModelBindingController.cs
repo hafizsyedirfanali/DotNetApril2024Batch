@@ -1,8 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentApplication.Models;
 using StudentApplication.ViewModels;
 
 namespace StudentApplication.Controllers;
-
+/// <summary>
+/// CRUD
+/// Create- single/multiple
+/// Read - single/multiple
+/// Update - 
+/// </summary>
 public class ModelBindingController : Controller
 {
     private List<StudentViewModel> students;
@@ -18,14 +24,18 @@ public class ModelBindingController : Controller
     {
         return View();
     }
-    public IActionResult Student()
+    public IActionResult Student(int id)
     {
-        StudentViewModel model = students[0];
+        var model = students.Where(s => s.Id == id).FirstOrDefault();
+        if(model == null)
+        {
+            return View("Error", new ErrorViewModel("1001", $"No record found for Id{id}"));
+        }
         return View(model);
     }
-    public IActionResult Student1()//Scaffolded
+    public IActionResult Student1(int id)//Scaffolded
     {
-        StudentViewModel model = students[0];
+        var model = students.Where(s => s.Id == id).FirstOrDefault();
         return View(model);
     }
     public IActionResult Students()
@@ -47,8 +57,68 @@ public class ModelBindingController : Controller
     {
         if (ModelState.IsValid)
         {
-            return View();
+            students.Add(model);
+            return RedirectToAction(nameof(students));
         }
-        return View();
+        //ModelState.AddModelError("", "Data submitted is not valid");
+        return View(model);
+    }
+    [HttpGet]
+    public IActionResult UpdateStudent(int id)
+    {
+        var model = students.Where(s => s.Id == id).FirstOrDefault();
+        if (model == null)
+        {
+            return View("Error", new ErrorViewModel("1002", $"No record found for Id{id}"));
+        }
+        return View(model);
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult UpdateStudent(StudentViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var student = students.Where(s => s.Id == model.Id).FirstOrDefault();
+            if (student == null)
+            {
+                return View("Error", new ErrorViewModel("1003", $"No record found for Id{model.Id}"));
+            }
+            student.Id = model.Id;
+            student.Name = model.Name;
+            student.Age = model.Age;
+            student.Gender = model.Gender;
+            return RedirectToAction(nameof(Students));
+        }
+        return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult UpdateStudents()
+    {
+        return View(students);
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult UpdateStudents(List<StudentViewModel> model)
+    {
+        if (ModelState.IsValid)
+        {
+            students.AddRange(model);
+            return RedirectToAction(nameof(students));
+        }
+        return View(model);        
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteStudent(int id)
+    {
+        var student = students.Where(s => s.Id == id).FirstOrDefault();
+        if (student == null)
+        {
+            return View("Error", new ErrorViewModel("1004", $"No record found for Id{id}"));
+        }
+        students.Remove(student);
+        return RedirectToAction(nameof(Students));
     }
 }

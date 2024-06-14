@@ -2,8 +2,12 @@ namespace StudentApplication.Models
 {
     public class ErrorViewModel
     {
-        public string? RequestId { get; set; }
-
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public ErrorViewModel(string errorCode, string errorMessage)
+        {
+            this.ErrorCode = errorCode;
+            this.ErrorMessage = errorMessage;
+        }
+        public string ErrorMessage { get; set; }
+        public string ErrorCode { get; set; }
     }
 }
