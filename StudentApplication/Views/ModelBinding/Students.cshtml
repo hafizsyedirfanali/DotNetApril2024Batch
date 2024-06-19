@@ -1,6 +1,12 @@
 ﻿@model List<StudentViewModel>
 
-
+@section Head{
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
+}
+<a asp-controller="ModelBinding" asp-action="AddStudent" class="btn btn-primary">Add Student</a>
 @if (Model.Any())
 {
     <table class="table table-hover">
@@ -23,7 +29,8 @@
                     <td>@student.Gender</td>
                     <td>
                         <form method="post" asp-action="DeleteStudent" asp-route-id="@student.Id">
-                            <button type="submit">Delete</button>
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete @student.Name?')"><i class="fa-solid fa-trash"></i></button>
+                            <a asp-action="UpdateStudent" asp-route-id="@student.Id" class="btn btn-sm btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
                         </form>
                     </td>
                 </tr>
