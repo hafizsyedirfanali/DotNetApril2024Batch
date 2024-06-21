@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var student in Model)
+            @foreach (var student in Model.OrderBy(s=>s.Id))
             {
                 <tr>
                     <td>@student.Id</td>

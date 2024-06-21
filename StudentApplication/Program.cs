@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StudentApplication.Data;
 using StudentApplication.Models;
+using StudentApplication.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,12 @@ builder.Services.AddTransient<TestService>();//Factory of Transient type, will p
 builder.Services.AddKeyedSingleton<TestService>("single");
 builder.Services.AddKeyedTransient<TestService>("transient");
 builder.Services.AddKeyedScoped<TestService>("scoped");
-builder.Services.AddSingleton<StudentDataSource>();
+builder.Services.AddSingleton<IStudentServices, StudentDataSource>();
+//builder.Services.AddSingleton<IStudentServices, StudentDatabase>();
+
+//Keyed services
+//builder.Services.AddKeyedSingleton<IStudentServices, StudentDataSource>("First");
+//builder.Services.AddKeyedSingleton<IStudentServices, StudentDatabase>("Second");
 //builder.Services.AddScoped<TestService>();
 
 var app = builder.Build();
