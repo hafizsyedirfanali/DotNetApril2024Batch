@@ -15,13 +15,20 @@ using StudentApplication.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = "Server=.;Database=StudentDatabase;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+builder.Services.AddDbContextPool<StudentDbContext>(options =>
     options.UseSqlServer(connectionString));
+//AddDbContextPool is better than AddDbContext as it reuses the same
+//StudentDbContext instance 
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<StudentDbContext>();
+
+
 builder.Services.AddMvc();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
