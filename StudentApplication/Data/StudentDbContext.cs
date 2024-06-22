@@ -10,6 +10,7 @@ namespace StudentApplication.Data
             : base(options)
         {
         }
+
         //Tables as properties
         public DbSet<Student> Students { get; set; }
     }
@@ -18,7 +19,10 @@ namespace StudentApplication.Data
     {
         [Key]//Optional for column name "Id"
         public int Id { get; set; }
+
+        [MaxLength(100)]
         public string Name { get; set; }
+
         public int Age { get; set; }
         public string? Gender { get; set; }
     }

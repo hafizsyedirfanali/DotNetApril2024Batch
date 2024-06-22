@@ -16,18 +16,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-var connectionString = "Server=.;Database=StudentDatabase;Trusted_Connection=True;MultipleActiveResultSets=true";
+var connectionString = "Server=(local)\\SQLEXPRESS;Database=StudentDatabase;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true";
 
 builder.Services.AddDbContextPool<StudentDbContext>(options =>
     options.UseSqlServer(connectionString));
 //AddDbContextPool is better than AddDbContext as it reuses the same
-//StudentDbContext instance 
+//StudentDbContext instance
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<StudentDbContext>();
-
 
 builder.Services.AddMvc();
 builder.Services.AddAuthentication();
@@ -36,8 +35,8 @@ builder.Services.AddTransient<TestService>();//Factory of Transient type, will p
 builder.Services.AddKeyedSingleton<TestService>("single");
 builder.Services.AddKeyedTransient<TestService>("transient");
 builder.Services.AddKeyedScoped<TestService>("scoped");
-builder.Services.AddSingleton<IStudentServices, StudentDataSource>();
-//builder.Services.AddSingleton<IStudentServices, StudentDatabase>();
+//builder.Services.AddSingleton<IStudentServices, StudentDataSource>();
+builder.Services.AddTransient<IStudentServices, StudentDatabase>();
 
 //Keyed services
 //builder.Services.AddKeyedSingleton<IStudentServices, StudentDataSource>("First");

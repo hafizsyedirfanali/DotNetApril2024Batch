@@ -1,0 +1,2 @@
+ Add-Migration CreateStudent -context StudentDbContext  -outputdir Data/Migrations
+ update-database -context StudentDbContext

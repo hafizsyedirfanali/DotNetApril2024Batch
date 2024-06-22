@@ -1,4 +1,5 @@
-﻿using StudentApplication.Services;
+﻿using StudentApplication.Data;
+using StudentApplication.Services;
 using StudentApplication.ViewModels;
 
 namespace StudentApplication.Models
@@ -72,39 +73,96 @@ namespace StudentApplication.Models
 
     public class StudentDatabase : IStudentServices
     {
+        private readonly StudentDbContext dbContext;
+
+        public StudentDatabase(StudentDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         public void AddStudent(StudentViewModel student)
         {
-            throw new NotImplementedException();
+            Student record = new Student()
+            {
+                Age = student.Age,
+                Name = student.Name,
+                Gender = student.Gender
+            };
+            dbContext.Students.Add(record);
+            dbContext.SaveChanges();
         }
 
         public void DeleteStudent(int id)
         {
-            throw new NotImplementedException();
+            var record = dbContext.Students.Find(id);
+            if (record != null)
+            {
+                dbContext.Students.Remove(record);
+                dbContext.SaveChanges();
+            }
         }
 
         public void DeleteStudents(List<int> ids)
         {
-            throw new NotImplementedException();
+            var records = dbContext.Students.Where(s => ids.Contains(s.Id)).ToList();
+            dbContext.Students.RemoveRange(records);
+            dbContext.SaveChanges();
         }
 
         public StudentViewModel? GetStudent(int id)
         {
-            throw new NotImplementedException();
+            var record = dbContext.Students.Find(id);
+            if (record != null)
+            {
+                StudentViewModel student = new StudentViewModel
+                {
+                    Id = record.Id,
+                    Name = record.Name,
+                    Age = record.Age,
+                    Gender = record.Gender
+                };
+                return student;
+            }
+            return null;
         }
 
         public List<StudentViewModel> GetStudents()
         {
-            throw new NotImplementedException();
+            var records = dbContext.Students
+                .Select(s => new StudentViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Age = s.Age,
+                    Gender = s.Gender
+                }).ToList();
+            return records;
         }
 
         public void UpdateStudent(StudentViewModel student)
         {
-            throw new NotImplementedException();
+            var record = dbContext.Students.Find(student.Id);
+            if (record is not null)
+            {
+                record.Age = student.Age;
+                record.Gender = student.Gender;
+                record.Name = student.Name;
+                dbContext.SaveChanges();
+            }
         }
 
         public void UpdateStudents(List<StudentViewModel> students)
         {
-            throw new NotImplementedException();
+            var ids = students.Select(s => s.Id).ToList();
+            var records = dbContext.Students.Where(s => ids.Contains(s.Id)).ToList();
+            foreach (var record in records)
+            {
+                var student = students.Where(s => s.Id == record.Id).First();
+                record.Name = student.Name;
+                record.Age = student.Age;
+                record.Gender = student.Gender;
+            }
+            dbContext.SaveChanges();
         }
     }
 }
