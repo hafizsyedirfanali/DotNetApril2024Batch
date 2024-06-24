@@ -12,8 +12,8 @@ using StudentApplication.Data;
 namespace StudentApplication.Data.Migrations
 {
     [DbContext(typeof(StudentDbContext))]
-    [Migration("20240622143314_CreateStudent")]
-    partial class CreateStudent
+    [Migration("20240624150326_StudentTableExtended")]
+    partial class StudentTableExtended
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -243,11 +243,43 @@ namespace StudentApplication.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("StudentApplication.Data.StudentExtention", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique();
+
+                    b.ToTable("StudentExtention");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -298,6 +330,23 @@ namespace StudentApplication.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("StudentApplication.Data.StudentExtention", b =>
+                {
+                    b.HasOne("StudentApplication.Data.Student", "Student")
+                        .WithOne("StudentExtention")
+                        .HasForeignKey("StudentApplication.Data.StudentExtention", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("StudentApplication.Data.Student", b =>
+                {
+                    b.Navigation("StudentExtention")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

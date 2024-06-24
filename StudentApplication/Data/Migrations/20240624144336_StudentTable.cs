@@ -5,7 +5,7 @@
 namespace StudentApplication.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateStudent : Migration
+    public partial class StudentTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

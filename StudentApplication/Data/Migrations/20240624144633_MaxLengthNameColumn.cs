@@ -5,7 +5,7 @@
 namespace StudentApplication.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class NameColLimitStudentTable : Migration
+    public partial class MaxLengthNameColumn : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

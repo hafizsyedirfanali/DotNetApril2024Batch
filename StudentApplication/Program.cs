@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-var connectionString = "Server=(local)\\SQLEXPRESS;Database=StudentDatabase;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true";
+var connectionString = "Server=(local)\\SQLEXPRESS;Database=StudentNewDatabase;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true";
 
 builder.Services.AddDbContextPool<StudentDbContext>(options =>
     options.UseSqlServer(connectionString));
