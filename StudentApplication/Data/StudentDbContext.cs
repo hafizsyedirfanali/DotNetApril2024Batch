@@ -13,6 +13,7 @@ namespace StudentApplication.Data
 
         //Tables as properties
         public DbSet<Student> Students { get; set; }
+        public DbSet<StudentExtention> StudentExtention { get; set; }
     }
 
     public class Student

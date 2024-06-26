@@ -6,7 +6,11 @@ namespace StudentApplication.Services
     {
         List<StudentViewModel> GetStudents();
 
+        List<StudentOneToOneViewModel> GetStudentsOneToOne();
+
         StudentViewModel? GetStudent(int id);
+
+        void AddDetails(StudentExtentionViewModel model);
 
         void UpdateStudent(StudentViewModel student);
 

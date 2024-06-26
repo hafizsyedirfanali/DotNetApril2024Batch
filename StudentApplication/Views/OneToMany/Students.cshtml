@@ -1,0 +1,49 @@
+﻿@model List<StudentOneToOneViewModel>
+
+@section Head{
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
+}
+<a asp-controller="OneToMany" asp-action="AddStudent" class="btn btn-primary">Add Student</a>
+@if (Model.Any())
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model.OrderBy(s=>s.Id))
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.Name</td>
+                    <td>@student.Age</td>
+                    <td>@student.Gender</td>
+                    <td>@student.Email</td>
+                    <td>@student.PhoneNumber</td>
+                    <td>
+                        <form method="post" asp-action="DeleteStudent" asp-route-id="@student.Id">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete @student.Name?')"><i class="fa-solid fa-trash"></i></button>
+                            <a asp-action="UpdateStudent" asp-route-id="@student.Id" class="btn btn-sm btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a asp-action="AddDetails" asp-route-id="@student.Id" class="btn btn-sm btn-info"><i class="fa-solid fa-plus"></i></a>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3>No record found</h3>
+}
