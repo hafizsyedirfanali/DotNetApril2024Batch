@@ -1,0 +1,23 @@
+﻿@model UpdateDetailsOneToOneViewModel
+<form method="post" asp-action="UpdateDetails" asp-controller="OneToOne">
+        <input hidden asp-for="StudentExtentionId">
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input class="form-control" asp-for="Email">
+        <span class="form-text text-danger" asp-validation-for="Email"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PhoneNumber" class="form-label"></label>
+        <input class="form-control" asp-for="PhoneNumber">
+        <span class="form-text text-danger" asp-validation-for="PhoneNumber"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Address" class="form-label"></label>
+        <input class="form-control" asp-for="Address">
+        <span class="form-text text-danger" asp-validation-for="Address"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="form-text text-danger" asp-validation-summary="All"></div>
+</form>
+
+

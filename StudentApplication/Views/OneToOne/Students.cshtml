@@ -6,7 +6,7 @@
 @section Scripts{
     <script src="~/lib/font-awesome/js/all.min.js"></script>
 }
-<a asp-controller="OneToMany" asp-action="AddStudent" class="btn btn-primary">Add Student</a>
+<a asp-controller="OneToOne" asp-action="AddStudent" class="btn btn-primary">Add Student</a>
 @if (Model.Any())
 {
     <table class="table table-hover">
@@ -18,6 +18,7 @@
                 <th>Gender</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Address</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -31,11 +32,22 @@
                     <td>@student.Gender</td>
                     <td>@student.Email</td>
                     <td>@student.PhoneNumber</td>
+
+                    <td>
+                        <label title="@student.Address">@(student.Address != null && student.Address.Length > 10 ? student.Address?.Substring(0, 10) : student.Address)...</label>
+                        </td>
                     <td>
                         <form method="post" asp-action="DeleteStudent" asp-route-id="@student.Id">
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete @student.Name?')"><i class="fa-solid fa-trash"></i></button>
                             <a asp-action="UpdateStudent" asp-route-id="@student.Id" class="btn btn-sm btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <a asp-action="AddDetails" asp-route-id="@student.Id" class="btn btn-sm btn-info"><i class="fa-solid fa-plus"></i></a>
+                            @if(student.StudentExtentionId == null)
+                            {
+                                <a asp-action="AddDetails" asp-route-id="@student.Id" class="btn btn-sm btn-info"><i class="fa-solid fa-plus"></i></a>
+                            }
+                            else
+                            {
+                                <a asp-action="UpdateDetails" asp-route-id="@student.StudentExtentionId" class="btn btn-sm btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
+                            }
                         </form>
                     </td>
                 </tr>

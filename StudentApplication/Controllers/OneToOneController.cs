@@ -5,11 +5,11 @@ using StudentApplication.ViewModels;
 
 namespace StudentApplication.Controllers
 {
-    public class OneToManyController : Controller
+    public class OneToOneController : Controller
     {
         private readonly IStudentServices studentServices;
 
-        public OneToManyController(IStudentServices studentServices)
+        public OneToOneController(IStudentServices studentServices)
         {
             this.studentServices = studentServices;
         }
@@ -58,6 +58,29 @@ namespace StudentApplication.Controllers
             if (ModelState.IsValid)
             {
                 studentServices.UpdateStudent(model);
+                return RedirectToAction(nameof(Students));
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult UpdateDetails(int id)
+        {
+            var model = studentServices.GetStudentExtention(id);
+            if (model == null)
+            {
+                return View("Error", new ErrorViewModel("1002", $"No record found for Id{id}"));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateDetails(UpdateDetailsOneToOneViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                studentServices.UpdateDetails(model);
                 return RedirectToAction(nameof(Students));
             }
             return View(model);

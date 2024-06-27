@@ -10,9 +10,13 @@ namespace StudentApplication.Services
 
         StudentViewModel? GetStudent(int id);
 
+        UpdateDetailsOneToOneViewModel? GetStudentExtention(int id);
+
         void AddDetails(StudentExtentionViewModel model);
 
         void UpdateStudent(StudentViewModel student);
+
+        void UpdateDetails(UpdateDetailsOneToOneViewModel student);
 
         void UpdateStudents(List<StudentViewModel> students);
 

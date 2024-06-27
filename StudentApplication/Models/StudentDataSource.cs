@@ -153,7 +153,8 @@ namespace StudentApplication.Models
                                Name = s.Name,
                                Age = s.Age,
                                Gender = s.Gender,
-                               Id = s.Id
+                               Id = s.Id,
+                               StudentExtentionId = ext.Id
                            }).AsNoTracking().ToList();
             return records;
         }
@@ -195,6 +196,34 @@ namespace StudentApplication.Models
                 record.Gender = student.Gender;
             }
             dbContext.SaveChanges();
+        }
+
+        public UpdateDetailsOneToOneViewModel? GetStudentExtention(int id)
+        {
+            var model = dbContext.StudentExtention.AsNoTracking().FirstOrDefault(s => s.Id == id);
+            if (model is not null)
+            {
+                return new UpdateDetailsOneToOneViewModel
+                {
+                    Address = model.Address,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    StudentExtentionId = model.Id
+                };
+            }
+            return null;
+        }
+
+        public void UpdateDetails(UpdateDetailsOneToOneViewModel student)
+        {
+            var record = dbContext.StudentExtention.Find(student.StudentExtentionId);
+            if (record is not null)
+            {
+                record.Email = student.Email;
+                record.PhoneNumber = student.PhoneNumber;
+                record.Address = student.Address;
+                dbContext.SaveChanges();
+            }
         }
     }
 }
