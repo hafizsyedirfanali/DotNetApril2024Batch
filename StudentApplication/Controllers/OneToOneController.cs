@@ -115,5 +115,12 @@ namespace StudentApplication.Controllers
             studentServices.DeleteStudent(id);
             return RedirectToAction(nameof(Students));
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteExtentionRecord(int id)
+        {
+            studentServices.DeleteExtentionRecord(id);
+            return RedirectToAction(nameof(Students));
+        }
     }
 }

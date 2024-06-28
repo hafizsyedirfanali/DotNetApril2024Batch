@@ -1,29 +1,32 @@
-﻿using StudentApplication.ViewModels;
+﻿using StudentApplication.Models;
+using StudentApplication.ViewModels;
 
 namespace StudentApplication.Services
 {
     public interface IStudentServices
     {
-        List<StudentViewModel> GetStudents();
+        Task<ResponseModel<List<StudentViewModel>>> GetStudents();
 
-        List<StudentOneToOneViewModel> GetStudentsOneToOne();
+        Task<ResponseModel<List<StudentOneToOneViewModel>>> GetStudentsOneToOne();
 
-        StudentViewModel? GetStudent(int id);
+        Task<ResponseModel<StudentViewModel?>> GetStudent(int id);
 
-        UpdateDetailsOneToOneViewModel? GetStudentExtention(int id);
+        Task<ResponseModel<UpdateDetailsOneToOneViewModel?>> GetStudentExtention(int id);
 
-        void AddDetails(StudentExtentionViewModel model);
+        Task<ResponseModel> AddDetails(StudentExtentionViewModel model);
 
-        void UpdateStudent(StudentViewModel student);
+        Task<ResponseModel> UpdateStudent(StudentViewModel student);
 
-        void UpdateDetails(UpdateDetailsOneToOneViewModel student);
+        Task<ResponseModel> UpdateDetails(UpdateDetailsOneToOneViewModel student);
 
-        void UpdateStudents(List<StudentViewModel> students);
+        Task<ResponseModel> UpdateStudents(List<StudentViewModel> students);
 
-        void DeleteStudent(int id);
+        Task<ResponseModel> DeleteStudent(int id);
 
-        void DeleteStudents(List<int> ids);
+        Task<ResponseModel> DeleteExtentionRecord(int id);
 
-        void AddStudent(StudentViewModel student);
+        Task<ResponseModel> DeleteStudents(List<int> ids);
+
+        Task<ResponseModel> AddStudent(StudentViewModel student);
     }
 }
