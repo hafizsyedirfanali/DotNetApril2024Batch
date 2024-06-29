@@ -5,6 +5,12 @@ using StudentApplication.ViewModels;
 
 namespace StudentApplication.Models
 {
+    /// <summary>
+    /// Joins:
+    /// 1. Inner Join
+    /// 2. Left Join
+    /// 3. Right Join
+    /// </summary>
     //public class StudentDataSource : IStudentServices
     //{
     //    private List<StudentViewModel> students;
@@ -84,22 +90,28 @@ namespace StudentApplication.Models
         public async Task<ResponseModel> AddStudent(StudentViewModel student)
         {
             ResponseModel responseModel = new ResponseModel();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                Student record = new Student()
+                try
                 {
-                    Age = student.Age,
-                    Name = student.Name,
-                    Gender = student.Gender
-                };
-                await dbContext.Students.AddAsync(record);
-                await dbContext.SaveChangesAsync();
-                responseModel.IsSucceeded = true;
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1001";
-                responseModel.ErrorMessage = $"Failed to add student due to reason: {ex.Message}";
+                    Student record = new Student()
+                    {
+                        Age = student.Age,
+                        Name = student.Name,
+                        Gender = student.Gender
+                    };
+                    await dbContext.Students.AddAsync(record);
+                    await dbContext.SaveChangesAsync();
+                    var id = record.Id;
+                    responseModel.IsSucceeded = true;
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    responseModel.ErrorCode = "S1001";
+                    responseModel.ErrorMessage = $"Failed to add student due to reason: {ex.Message}";
+                }
             }
             return responseModel;
         }
@@ -108,25 +120,29 @@ namespace StudentApplication.Models
         {
             ResponseModel responseModel = new ResponseModel();
 
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var record = await dbContext.Students.FindAsync(id);
-                if (record != null)
+                try
                 {
-                    dbContext.Students.Remove(record);
-                    await dbContext.SaveChangesAsync();
-                    responseModel.IsSucceeded = true;
+                    var record = await dbContext.Students.FindAsync(id);
+                    if (record != null)
+                    {
+                        dbContext.Students.Remove(record);
+                        await dbContext.SaveChangesAsync();
+                        responseModel.IsSucceeded = true;
+                        await transaction.CommitAsync();
+                    }
+                    else
+                    {
+                        responseModel.ErrorCode = "S1003";
+                        responseModel.ErrorMessage = $"Failed to delete student due to reason: Record not found";
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    responseModel.ErrorCode = "S1003";
-                    responseModel.ErrorMessage = $"Failed to delete student due to reason: Record not found";
+                    responseModel.ErrorCode = "S1002";
+                    responseModel.ErrorMessage = $"Failed to delete student due to reason: {ex.Message}";
                 }
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1002";
-                responseModel.ErrorMessage = $"Failed to delete student due to reason: {ex.Message}";
             }
             return responseModel;
         }
@@ -134,25 +150,29 @@ namespace StudentApplication.Models
         public async Task<ResponseModel> DeleteExtentionRecord(int id)
         {
             ResponseModel responseModel = new ResponseModel();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var record = await dbContext.StudentExtention.FindAsync(id);
-                if (record != null)
+                try
                 {
-                    dbContext.StudentExtention.Remove(record);
-                    await dbContext.SaveChangesAsync();
-                    responseModel.IsSucceeded = true;
+                    var record = await dbContext.StudentExtention.FindAsync(id);
+                    if (record != null)
+                    {
+                        dbContext.StudentExtention.Remove(record);
+                        await dbContext.SaveChangesAsync();
+                        responseModel.IsSucceeded = true;
+                        await transaction.CommitAsync();
+                    }
+                    else
+                    {
+                        responseModel.ErrorCode = "S1004";
+                        responseModel.ErrorMessage = $"Failed to delete student extention due to reason: record not found";
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    responseModel.ErrorCode = "S1004";
-                    responseModel.ErrorMessage = $"Failed to delete student extention due to reason: record not found";
+                    responseModel.ErrorCode = "S1005";
+                    responseModel.ErrorMessage = $"Failed to delete student extention due to reason:{ex.Message}";
                 }
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1005";
-                responseModel.ErrorMessage = $"Failed to delete student extention due to reason:{ex.Message}";
             }
             return responseModel;
         }
@@ -160,17 +180,21 @@ namespace StudentApplication.Models
         public async Task<ResponseModel> DeleteStudents(List<int> ids)
         {
             ResponseModel responseModel = new ResponseModel();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var records = await dbContext.Students.Where(s => ids.Contains(s.Id)).ToListAsync();
-                dbContext.Students.RemoveRange(records);
-                await dbContext.SaveChangesAsync();
-                responseModel.IsSucceeded = true;
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1006";
-                responseModel.ErrorMessage = $"Failed to delete students due to reason:{ex.Message}";
+                try
+                {
+                    var records = await dbContext.Students.Where(s => ids.Contains(s.Id)).ToListAsync();
+                    dbContext.Students.RemoveRange(records);
+                    await dbContext.SaveChangesAsync();
+                    responseModel.IsSucceeded = true;
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    responseModel.ErrorCode = "S1006";
+                    responseModel.ErrorMessage = $"Failed to delete students due to reason:{ex.Message}";
+                }
             }
             return responseModel;
         }
@@ -178,31 +202,35 @@ namespace StudentApplication.Models
         public async Task<ResponseModel<StudentViewModel?>> GetStudent(int id)
         {
             ResponseModel<StudentViewModel?> responseModel = new ResponseModel<StudentViewModel?>();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var record = await dbContext.Students.FindAsync(id);
-                if (record != null)
+                try
                 {
-                    StudentViewModel student = new StudentViewModel
+                    var record = await dbContext.Students.FindAsync(id);
+                    if (record != null)
                     {
-                        Id = record.Id,
-                        Name = record.Name,
-                        Age = record.Age,
-                        Gender = record.Gender
-                    };
-                    responseModel.Value = student;
-                    responseModel.IsSucceeded = true;
+                        StudentViewModel student = new StudentViewModel
+                        {
+                            Id = record.Id,
+                            Name = record.Name,
+                            Age = record.Age,
+                            Gender = record.Gender
+                        };
+                        responseModel.Value = student;
+                        responseModel.IsSucceeded = true;
+                        await transaction.CommitAsync();
+                    }
+                    else
+                    {
+                        responseModel.ErrorCode = "S1007";
+                        responseModel.ErrorMessage = $"Failed to find student due to reason:record not found";
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    responseModel.ErrorCode = "S1007";
-                    responseModel.ErrorMessage = $"Failed to find student due to reason:record not found";
+                    responseModel.ErrorCode = "S1008";
+                    responseModel.ErrorMessage = $"Failed to find student due to reason:{ex.Message}";
                 }
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1008";
-                responseModel.ErrorMessage = $"Failed to find student due to reason:{ex.Message}";
             }
             return responseModel;
         }
@@ -210,23 +238,27 @@ namespace StudentApplication.Models
         public async Task<ResponseModel<List<StudentViewModel>>> GetStudents()
         {
             ResponseModel<List<StudentViewModel>> responseModel = new ResponseModel<List<StudentViewModel>>();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var records = await dbContext.Students
-                        .Select(s => new StudentViewModel
-                        {
-                            Id = s.Id,
-                            Name = s.Name,
-                            Age = s.Age,
-                            Gender = s.Gender
-                        }).ToListAsync();
-                responseModel.Value = records;
-                responseModel.IsSucceeded = true;
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1009";
-                responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
+                try
+                {
+                    var records = await dbContext.Students
+                            .Select(s => new StudentViewModel
+                            {
+                                Id = s.Id,
+                                Name = s.Name,
+                                Age = s.Age,
+                                Gender = s.Gender
+                            }).ToListAsync();
+                    responseModel.Value = records;
+                    responseModel.IsSucceeded = true;
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    responseModel.ErrorCode = "S1009";
+                    responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
+                }
             }
             return responseModel;
         }
@@ -234,29 +266,66 @@ namespace StudentApplication.Models
         public async Task<ResponseModel<List<StudentOneToOneViewModel>>> GetStudentsOneToOne()
         {
             ResponseModel<List<StudentOneToOneViewModel>> responseModel = new ResponseModel<List<StudentOneToOneViewModel>>();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var records = await (from s in dbContext.Students
-                                     join e in dbContext.StudentExtention on s.Id equals e.StudentId into e1
-                                     from ext in e1.DefaultIfEmpty()
-                                     select new StudentOneToOneViewModel
-                                     {
-                                         Address = ext.Address,
-                                         PhoneNumber = ext.PhoneNumber,
-                                         Email = ext.Email,
-                                         Name = s.Name,
-                                         Age = s.Age,
-                                         Gender = s.Gender,
-                                         Id = s.Id,
-                                         StudentExtentionId = ext.Id
-                                     }).AsNoTracking().ToListAsync();
-                responseModel.Value = records;
-                responseModel.IsSucceeded = true;
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1010";
-                responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
+                try
+                {
+                    ///var innerJoin = await (from s1 in dbContext.Table1
+                    ///                       join s2 in dbContext.Table2 on s1.Id equals s2.Table1Id
+                    ///                       join s3 in dbContext.Table3 on s2.Id equals s3.Table2Id
+                    ///                       select new {
+                    ///                       s1.Id, s1.Name, s2.Email, s3.AccountNo
+                    ///                       }).ToListAsync();
+                    var innerJoin = await (from s in dbContext.Students
+                                           join e in dbContext.StudentExtention on s.Id equals e.StudentId
+                                           select new
+                                           {
+                                               s.Id,
+                                               s.Name,
+                                               e.Email
+                                           }).AsNoTracking().ToListAsync();
+                    var leftJoin = await (from s in dbContext.Students
+                                          join e in dbContext.StudentExtention on s.Id equals e.StudentId into e1
+                                          from e2 in e1.DefaultIfEmpty()
+                                          select new
+                                          {
+                                              StudentId = s.Id,
+                                              StudentName = s.Name,
+                                              StudentEmail = e2 != null ? e2.Email : "NA"
+                                          }).AsNoTracking().ToListAsync();
+                    var rightJoin = await (from e in dbContext.StudentExtention
+                                           join s in dbContext.Students on e.StudentId equals s.Id into s1
+                                           from s2 in s1.DefaultIfEmpty()
+                                           select new
+                                           {
+                                               StudentId = s2 != null ? s2.Id : 0,
+                                               StudentName = s2 != null ? s2.Name : "",
+                                               StudentEmail = e.Email,
+                                           }).AsNoTracking().ToListAsync();
+
+                    var records = await (from s in dbContext.Students
+                                         join e in dbContext.StudentExtention on s.Id equals e.StudentId into e1
+                                         from ext in e1.DefaultIfEmpty()
+                                         select new StudentOneToOneViewModel
+                                         {
+                                             Address = ext.Address,
+                                             PhoneNumber = ext.PhoneNumber,
+                                             Email = ext.Email,
+                                             Name = s.Name,
+                                             Age = s.Age,
+                                             Gender = s.Gender,
+                                             Id = s.Id,
+                                             StudentExtentionId = ext.Id
+                                         }).AsNoTracking().ToListAsync();
+                    responseModel.Value = records;
+                    responseModel.IsSucceeded = true;
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    responseModel.ErrorCode = "S1010";
+                    responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
+                }
             }
             return responseModel;
         }
@@ -264,23 +333,27 @@ namespace StudentApplication.Models
         public async Task<ResponseModel> AddDetails(StudentExtentionViewModel model)
         {
             ResponseModel responseModel = new ResponseModel();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                StudentExtention details = new StudentExtention
+                try
                 {
-                    StudentId = model.StudentId,
-                    Address = model.Address,
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber
-                };
-                await dbContext.StudentExtention.AddAsync(details);
-                await dbContext.SaveChangesAsync();
-                responseModel.IsSucceeded = true;
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1011";
-                responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
+                    StudentExtention details = new StudentExtention
+                    {
+                        StudentId = model.StudentId,
+                        Address = model.Address,
+                        Email = model.Email,
+                        PhoneNumber = model.PhoneNumber
+                    };
+                    await dbContext.StudentExtention.AddAsync(details);
+                    await dbContext.SaveChangesAsync();
+                    responseModel.IsSucceeded = true;
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    responseModel.ErrorCode = "S1011";
+                    responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
+                }
             }
             return responseModel;
         }
@@ -288,27 +361,31 @@ namespace StudentApplication.Models
         public async Task<ResponseModel> UpdateStudent(StudentViewModel student)
         {
             ResponseModel responseModel = new ResponseModel();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var record = await dbContext.Students.FindAsync(student.Id);
-                if (record is not null)
+                try
                 {
-                    record.Age = student.Age;
-                    record.Gender = student.Gender;
-                    record.Name = student.Name;
-                    await dbContext.SaveChangesAsync();
-                    responseModel.IsSucceeded = true;
+                    var record = await dbContext.Students.FindAsync(student.Id);
+                    if (record is not null)
+                    {
+                        record.Age = student.Age;
+                        record.Gender = student.Gender;
+                        record.Name = student.Name;
+                        await dbContext.SaveChangesAsync();
+                        responseModel.IsSucceeded = true;
+                        await transaction.CommitAsync();
+                    }
+                    else
+                    {
+                        responseModel.ErrorCode = "S1012";
+                        responseModel.ErrorMessage = $"Failed to get students due to reason:record not found";
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    responseModel.ErrorCode = "S1012";
-                    responseModel.ErrorMessage = $"Failed to get students due to reason:record not found";
+                    responseModel.ErrorCode = "S1013";
+                    responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
                 }
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1013";
-                responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
             }
             return responseModel;
         }
@@ -316,24 +393,28 @@ namespace StudentApplication.Models
         public async Task<ResponseModel> UpdateStudents(List<StudentViewModel> students)
         {
             ResponseModel responseModel = new ResponseModel();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var ids = students.Select(s => s.Id).ToList();
-                var records = await dbContext.Students.Where(s => ids.Contains(s.Id)).ToListAsync();
-                foreach (var record in records)
+                try
                 {
-                    var student = students.Where(s => s.Id == record.Id).First();
-                    record.Name = student.Name;
-                    record.Age = student.Age;
-                    record.Gender = student.Gender;
+                    var ids = students.Select(s => s.Id).ToList();
+                    var records = await dbContext.Students.Where(s => ids.Contains(s.Id)).ToListAsync();
+                    foreach (var record in records)
+                    {
+                        var student = students.Where(s => s.Id == record.Id).First();
+                        record.Name = student.Name;
+                        record.Age = student.Age;
+                        record.Gender = student.Gender;
+                    }
+                    await dbContext.SaveChangesAsync();
+                    responseModel.IsSucceeded = true;
+                    await transaction.CommitAsync();
                 }
-                await dbContext.SaveChangesAsync();
-                responseModel.IsSucceeded = true;
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1014";
-                responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
+                catch (Exception ex)
+                {
+                    responseModel.ErrorCode = "S1014";
+                    responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
+                }
             }
             return responseModel;
         }
@@ -341,31 +422,35 @@ namespace StudentApplication.Models
         public async Task<ResponseModel<UpdateDetailsOneToOneViewModel?>> GetStudentExtention(int id)
         {
             ResponseModel<UpdateDetailsOneToOneViewModel?> responseModel = new ResponseModel<UpdateDetailsOneToOneViewModel?>();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var model = await dbContext.StudentExtention.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
-                if (model is not null)
+                try
                 {
-                    var record = new UpdateDetailsOneToOneViewModel
+                    var model = await dbContext.StudentExtention.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
+                    if (model is not null)
                     {
-                        Address = model.Address,
-                        Email = model.Email,
-                        PhoneNumber = model.PhoneNumber,
-                        StudentExtentionId = model.Id
-                    };
-                    responseModel.Value = record;
-                    responseModel.IsSucceeded = true;
+                        var record = new UpdateDetailsOneToOneViewModel
+                        {
+                            Address = model.Address,
+                            Email = model.Email,
+                            PhoneNumber = model.PhoneNumber,
+                            StudentExtentionId = model.Id
+                        };
+                        responseModel.Value = record;
+                        responseModel.IsSucceeded = true;
+                        await transaction.CommitAsync();
+                    }
+                    else
+                    {
+                        responseModel.ErrorCode = "S1015";
+                        responseModel.ErrorMessage = $"Failed to get students due to reason:rec not foudn";
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    responseModel.ErrorCode = "S1015";
-                    responseModel.ErrorMessage = $"Failed to get students due to reason:rec not foudn";
+                    responseModel.ErrorCode = "S1016";
+                    responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
                 }
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1016";
-                responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
             }
             return responseModel;
         }
@@ -373,27 +458,31 @@ namespace StudentApplication.Models
         public async Task<ResponseModel> UpdateDetails(UpdateDetailsOneToOneViewModel student)
         {
             ResponseModel responseModel = new ResponseModel();
-            try
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
             {
-                var record = await dbContext.StudentExtention.FindAsync(student.StudentExtentionId);
-                if (record is not null)
+                try
                 {
-                    record.Email = student.Email;
-                    record.PhoneNumber = student.PhoneNumber;
-                    record.Address = student.Address;
-                    await dbContext.SaveChangesAsync();
-                    responseModel.IsSucceeded = true;
+                    var record = await dbContext.StudentExtention.FindAsync(student.StudentExtentionId);
+                    if (record is not null)
+                    {
+                        record.Email = student.Email;
+                        record.PhoneNumber = student.PhoneNumber;
+                        record.Address = student.Address;
+                        await dbContext.SaveChangesAsync();
+                        responseModel.IsSucceeded = true;
+                        await transaction.CommitAsync();
+                    }
+                    else
+                    {
+                        responseModel.ErrorCode = "S1016";
+                        responseModel.ErrorMessage = $"Failed to get students due to reason:record not found";
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    responseModel.ErrorCode = "S1016";
-                    responseModel.ErrorMessage = $"Failed to get students due to reason:record not found";
+                    responseModel.ErrorCode = "S1017";
+                    responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
                 }
-            }
-            catch (Exception ex)
-            {
-                responseModel.ErrorCode = "S1017";
-                responseModel.ErrorMessage = $"Failed to get students due to reason:{ex.Message}";
             }
             return responseModel;
         }
