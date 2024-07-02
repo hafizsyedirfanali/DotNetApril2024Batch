@@ -1,0 +1,35 @@
+﻿@model List<BranchesViewModel>
+@{
+    ViewBag.Title = "Branches";
+}
+
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Branch Name</th>
+                <th>Branch Code</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.BranchName</td>
+                    <td>@item.BranchCode</td>
+                    <td>
+                        TOmorrow
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3>No record found</h3>
+}

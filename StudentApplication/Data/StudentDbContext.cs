@@ -13,7 +13,10 @@ namespace StudentApplication.Data
 
         //Tables as properties
         public DbSet<Student> Students { get; set; }
+
         public DbSet<StudentExtention> StudentExtention { get; set; }
+        public DbSet<Branch> Branches { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
     }
 
     public class Student
@@ -37,5 +40,22 @@ namespace StudentApplication.Data
         public string Address { get; set; }
         public Student Student { get; set; }
         public int StudentId { get; set; }
+    }
+
+    public class Branch
+    {
+        public int Id { get; set; }
+        public string BranchName { get; set; }
+        public string BranchCode { get; set; }
+        public List<Subject> Subjects { get; set; }
+    }
+
+    public class Subject
+    {
+        public int Id { get; set; }
+        public Branch Branch { get; set; }
+        public int BranchId { get; set; }
+        public string SubjectName { get; set; }
+        public string SubjectCode { get; set; }
     }
 }
